@@ -8,7 +8,9 @@ import com.ecommerce.exceptions.ResourceNotFoundException;
 import com.ecommerce.model.Item;
 import com.ecommerce.repository.ItemRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,15 +24,16 @@ public class ItemService {
 
     public ItemResponseDTO createItem(CreateItemDTO createItemDTO) {
         Item savedItem = itemRepository.save(createItemDTO.toItem());
-        return ItemResponseDTO.toItemResponseDTO(savedItem);
+        return ItemResponseDTO.fromItem(savedItem);
     }
 
-    public Page<ItemResponseDTO> getAllItems(Pageable pageable) {
-        return itemRepository.findAll(pageable).map(ItemResponseDTO::toItemResponseDTO);
+    public Page<ItemResponseDTO> getPaginatedItems(int page, int size, String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return itemRepository.findAll(pageable).map(ItemResponseDTO::fromItem);
     }
 
     public ItemResponseDTO getItemById(Long id) {
-        return itemRepository.findById(id).map(ItemResponseDTO::toItemResponseDTO).orElseThrow(
+        return itemRepository.findById(id).map(ItemResponseDTO::fromItem).orElseThrow(
                 () -> new ResourceNotFoundException("Item not found with ID: " + id));
     }
 
@@ -46,7 +49,7 @@ public class ItemService {
         existingItem.setPrice(updateItemDTO.getPrice());
         existingItem.setDescription(updateItemDTO.getDescription());
 
-        return ItemResponseDTO.toItemResponseDTO(itemRepository.save(existingItem));
+        return ItemResponseDTO.fromItem(itemRepository.save(existingItem));
     }
 
     public void deleteItem(Long id) {

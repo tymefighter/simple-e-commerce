@@ -17,6 +17,7 @@ public class CartItem {
     @ManyToOne
     @JoinColumn(name = "item_id", nullable = false)
     private Item item;
+
     private int quantity;
 
     public CartItem() {
@@ -27,7 +28,7 @@ public class CartItem {
         this.quantity = quantity;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -49,5 +50,9 @@ public class CartItem {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public void incrementQuantity(int incrBy) {
+        this.quantity += incrBy;
     }
 }
