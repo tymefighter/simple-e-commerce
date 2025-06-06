@@ -4,9 +4,8 @@ import com.ecommerce.dto.CreateItemDTO;
 import com.ecommerce.dto.ItemResponseDTO;
 import com.ecommerce.dto.UpdateItemDTO;
 import com.ecommerce.service.ItemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +15,7 @@ public class ItemController {
 
     private final ItemService itemService;
 
+    @Autowired
     public ItemController(ItemService itemService) {
         this.itemService = itemService;
     }
@@ -26,15 +26,15 @@ public class ItemController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ItemResponseDTO>> getAllItems(@RequestParam(defaultValue = "0") int page,
+    public ResponseEntity<Page<ItemResponseDTO>> getPaginatedItems(@RequestParam(defaultValue = "0") int page,
                                                              @RequestParam(defaultValue = "10") int size,
                                                              @RequestParam(defaultValue = "id") String sortBy) {
 
-        return ResponseEntity.ok(itemService.getAllItems(PageRequest.of(page, size, Sort.by(sortBy))));
+        return ResponseEntity.ok(itemService.getPaginatedItems(page, size, sortBy));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ItemResponseDTO> getItemById(@PathVariable Long id) {
+    public ResponseEntity<ItemResponseDTO> getItemById(@PathVariable long id) {
         return ResponseEntity.ok(itemService.getItemById(id));
     }
 
@@ -44,8 +44,8 @@ public class ItemController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteItem(@PathVariable Long id) {
+    public ResponseEntity<String> deleteItem(@PathVariable long id) {
         itemService.deleteItem(id);
-        return ResponseEntity.ok(String.format("Item with id %d deleted", id));
+        return ResponseEntity.ok(String.format("Item with id %d successfully deleted", id));
     }
 }

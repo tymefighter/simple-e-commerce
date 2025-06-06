@@ -3,9 +3,10 @@ package com.ecommerce.dto;
 import java.time.LocalDateTime;
 
 public class ErrorResponse {
-    private String code;
-    private String message;
-    private LocalDateTime timestamp;
+
+    private final String code;
+    private final String message;
+    private final LocalDateTime timestamp;
 
     public ErrorResponse(String code, String message) {
         this.code = code;
@@ -17,23 +18,11 @@ public class ErrorResponse {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
     public LocalDateTime getTimestamp() {
         return timestamp;
-    }
-
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
     }
 }

@@ -8,15 +8,6 @@ public class CreateItemDTO {
     private Double price;
     private String description;
 
-    public CreateItemDTO() {
-    }
-
-    public CreateItemDTO(String name, Double price, String description) {
-        this.name = name;
-        this.price = price;
-        this.description = description;
-    }
-
     public Item toItem() {
         return new Item(this.name, this.price, this.description);
     }
